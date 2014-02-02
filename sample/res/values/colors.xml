@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_bg">#e6e8e9</color>
+    <color name="toaster_red">#ee2d24</color>
+
+    <color name="grid_item_bg_shadow">#20000000</color>
+    <color name="grid_item_bg_pressed">#D8D8D8</color>
+</resources>

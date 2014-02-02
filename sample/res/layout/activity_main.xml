@@ -1,0 +1,27 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    tools:context=".MainActivity" >
+
+    <ListView
+        android:id="@+id/multiColumnList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/grid_spacing" />
+
+
+    <!--
+        If your list does not have a header or a footer, then you can set
+        the proper amount of padding for your card-based view by disabling
+        clip to padding and setting a top or bottom padding value.
+
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/grid_spacing"
+        android:paddingBottom="@dimen/grid_spacing"
+    -->
+    
+</FrameLayout>

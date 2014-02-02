@@ -1,0 +1,91 @@
+import groovy.swing.SwingBuilder
+
+apply plugin: 'android'
+
+android {
+    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        androidTest.setRoot('tests')
+
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("tt-release-keystore.jks")
+
+            keyAlias 'PROMPT_DEV'
+            storePassword 'PROMPT_DEV'
+            keyPassword 'PROMPT_DEV'
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:19.0.1'
+    compile 'com.squareup.picasso:picasso:2.2.+'
+    compile fileTree(dir: 'libs', includes: ['activeandroid*.jar'])
+    compile project(':library')
+}
+
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if (taskGraph.hasTask(':sample:packageRelease')) {
+        android.signingConfigs.release.storePassword = promptDev('KeyStore', 'Please enter the keystore password: ').toString();
+        android.signingConfigs.release.keyAlias = promptDev('Alias', 'Please enter the key alias name: ').toString()
+        android.signingConfigs.release.keyPassword = promptDev('Key', 'Please enter the key password: ').toString()
+    }
+}
+
+def promptDev(dialogTitle, promptText) {
+    def pass = ''
+    if (System.console() == null) {
+        new SwingBuilder().edt {
+            dialog(modal: true,
+                    title: dialogTitle,
+                    alwaysOnTop: true,
+                    resizable: false,
+                    locationRelativeTo: null,
+                    pack: true,
+                    show: true
+            ) {
+                vbox {
+                    label(text: promptText)
+                    input = passwordField()
+                    button(defaultButton: true, text: 'OK', actionPerformed: {
+                        pass = input.password;
+                        dispose();
+                    })
+                }
+            }
+        }
+    } else {
+        pass = System.console().readPassword('\n' + promptText)
+        pass = new String(pass)
+    }
+
+    if (pass.size() <= 0) {
+        throw new InvalidUserDataException("You must enter a password to proceed.")
+    }
+
+    return pass
+}
