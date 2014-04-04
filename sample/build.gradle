@@ -1,17 +1,57 @@
 import groovy.swing.SwingBuilder
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.jcandksolutions.gradle:android-unit-test:1.0.+'
+    }
+}
+
+// Manifest version information
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 1
+def versionBuild = 0
+
 apply plugin: 'android'
+
+repositories {
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+
+def isTravis = "true".equals(System.getenv("TRAVIS"))
+def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 
+    dexOptions {
+        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+        preDexLibraries = preDexEnabled && !isTravis
+    }
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}"
+
+        buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
+        buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+
+        packageName "com.twotoasters.multicolumnlistadapter.sample"
+    }
+
     sourceSets {
-
-        androidTest.setRoot('tests')
-
-        debug.setRoot('build-types/debug')
-        release.setRoot('build-types/release')
+        // Since we are not supporting instrument tests anymore, use the sourceset for our unit tests
+        androidTest.setRoot('src/test')
     }
 
     signingConfigs {
@@ -31,11 +71,26 @@ android {
     }
 }
 
+apply plugin: 'android-unit-test'
+
 dependencies {
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.squareup.picasso:picasso:2.2.+'
     compile fileTree(dir: 'libs', includes: ['activeandroid*.jar'])
     compile project(':library')
+
+    testCompile 'com.squareup:fest-android:1.0.+'
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.mockito:mockito-all:1.9.5'
+    testCompile 'org.robolectric:robolectric:2.3-SNAPSHOT'
+    testCompile 'com.google.mockwebserver:mockwebserver:20130706'
+
+    // These should mirror the testCompile dependencies above
+    androidTestCompile 'com.squareup:fest-android:1.0.+'
+    androidTestCompile 'junit:junit:4.10'
+    androidTestCompile 'org.mockito:mockito-all:1.9.5'
+    androidTestCompile 'org.robolectric:robolectric:2.3-SNAPSHOT'
+    androidTestCompile 'com.google.mockwebserver:mockwebserver:20130706'
 }
 
 
