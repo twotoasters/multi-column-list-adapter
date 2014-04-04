@@ -1,10 +1,11 @@
-package com.twotoasters.multicolumnlistadapter.sample;
+package main.sample;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.twotoasters.multicolumnlistadapter.MultiColumnListAdapter.MultiColumnListViewHolder;
+import com.twotoasters.multicolumnlistadapter.sample.R;
 
 /**
  * Serves as the view holder for the toaster adapter. This must be a top level

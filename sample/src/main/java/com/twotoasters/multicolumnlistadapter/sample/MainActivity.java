@@ -1,4 +1,4 @@
-package com.twotoasters.multicolumnlistadapter.sample;
+package main.sample;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -10,7 +10,9 @@ import android.widget.ListView;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
-import com.twotoasters.multicolumnlistadapter.sample.ToasterData.Toaster;
+import com.twotoasters.multicolumnlistadapter.sample.R;
+
+import main.sample.ToasterData.Toaster;
 
 import java.util.List;
 

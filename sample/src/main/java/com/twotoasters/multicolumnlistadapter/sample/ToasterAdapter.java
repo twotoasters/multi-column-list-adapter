@@ -1,9 +1,8 @@
-package com.twotoasters.multicolumnlistadapter.sample;
+package main.sample;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

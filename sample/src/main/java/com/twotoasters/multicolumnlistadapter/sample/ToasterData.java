@@ -1,4 +1,6 @@
-package com.twotoasters.multicolumnlistadapter.sample;
+package main.sample;
+
+import com.twotoasters.multicolumnlistadapter.sample.R;
 
 public final class ToasterData {
 

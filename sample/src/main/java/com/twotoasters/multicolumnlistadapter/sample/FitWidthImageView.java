@@ -1,4 +1,4 @@
-package com.twotoasters.multicolumnlistadapter.sample;
+package main.sample;
 
 import android.content.Context;
 import android.util.AttributeSet;
