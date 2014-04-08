@@ -1,4 +1,4 @@
-# multi-column-list-adapter
+# multi-column-list-adapter  &nbsp;&nbsp; [![Build Status for master](https://travis-ci.org/twotoasters/multi-column-list-adapter.svg?branch=master)](https://travis-ci.org/twotoasters/multi-column-list-adapter)
 
 MultiColumnListAdapter is a cursor adapter that enables you to make a ListView that looks like a GridView. One important benefit is that you can add headers and footers to your grid-looking list.
 
