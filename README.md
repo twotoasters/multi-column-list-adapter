@@ -23,7 +23,7 @@ Grab the library from Maven central
 or Gradle:
 
 ```groovy
-compile 'com.twotoasters.multilinecursoradapter:library:1.0.+'
+compile 'com.twotoasters.multicolumnlistadapter:library:1.0.+'
 ```
 
 ## Credit
