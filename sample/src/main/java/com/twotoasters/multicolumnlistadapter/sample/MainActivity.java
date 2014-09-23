@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
         Cursor cursor = db.query(ToasterModel.TABLE_NAME, null, null, null, null, null, null);
 
         ToasterAdapter adapter = new ToasterAdapter(this, cursor,
-                R.layout.grid_item, R.integer.num_columns, R.dimen.grid_spacing);
+                R.layout.grid_item, R.integer.num_columns, R.dimen.grid_spacing, R.dimen.grid_spacing);
 
         View headerView = LayoutInflater.from(this).inflate(R.layout.view_header, null, false);
         View footerView = LayoutInflater.from(this).inflate(R.layout.view_footer, null, false);
