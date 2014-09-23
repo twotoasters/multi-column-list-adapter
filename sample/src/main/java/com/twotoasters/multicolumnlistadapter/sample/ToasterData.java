@@ -25,7 +25,6 @@ public final class ToasterData {
         {"Duncan", R.drawable.duncan},
         {"Dirk", R.drawable.dirk},
         {"Prachi", R.drawable.prachi},
-        {"Carlton", R.drawable.carlton},
         {"Chris", R.drawable.chris},
         {"Tom", R.drawable.tom},
         {"Curtis", R.drawable.curtis}

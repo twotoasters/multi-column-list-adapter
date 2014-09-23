@@ -20,8 +20,8 @@ public class ToasterAdapter extends MultiColumnListAdapter<ToasterGridItemViewHo
     protected int gridItemLayoutResId;
 
     public ToasterAdapter(Context context, Cursor cursor,
-                          int gridItemLayoutResId, int numColumnsResId, int horizontalSpacingResId) {
-        super(context, cursor, numColumnsResId, horizontalSpacingResId);
+                          int gridItemLayoutResId, int numColumnsResId, int horizontalSpacingResId, int verticalSpacingResId) {
+        super(context, cursor, numColumnsResId, horizontalSpacingResId, verticalSpacingResId);
         this.gridItemLayoutResId = gridItemLayoutResId;
         inflater = LayoutInflater.from(context);
     }

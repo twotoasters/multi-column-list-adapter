@@ -103,7 +103,7 @@ public class MultiColumnListAdapterTest {
     static class TestFakeGridAdapter extends MultiColumnListAdapter<MockGridItemViewHolder> {
 
         private TestFakeGridAdapter(Context context, Cursor cursor) {
-            super(context, cursor, 0, 0);
+            super(context, cursor, 0, 0, 0);
             numColumns = NUM_COLUMNS;
         }
 

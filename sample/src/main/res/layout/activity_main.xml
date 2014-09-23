@@ -10,18 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:listSelector="@android:color/transparent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="@dimen/grid_spacing" />
+        android:divider="@null"
+        android:dividerHeight="0dp" />
 
-
-    <!--
-        If your list does not have a header or a footer, then you can set
-        the proper amount of padding for your card-based view by disabling
-        clip to padding and setting a top or bottom padding value.
-
-        android:clipToPadding="false"
-        android:paddingTop="@dimen/grid_spacing"
-        android:paddingBottom="@dimen/grid_spacing"
-    -->
-    
 </FrameLayout>

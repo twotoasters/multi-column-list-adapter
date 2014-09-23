@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.LinearLayout;
 
 import com.twotoasters.multicolumnlistadapter.MultiColumnListAdapter.MultiColumnListViewHolder;
@@ -31,18 +32,27 @@ public abstract class MultiColumnListAdapter<V extends MultiColumnListViewHolder
     protected LayoutInflater inflater;
     protected int numColumns = 1;
     protected int gridItemHorizontalSpacing = 0;
+    protected int gridItemVerticalSpacing = 0;
 
-    public MultiColumnListAdapter(Context context, Cursor cursor, int numColumnsResId, int horizontalSpacingResId) {
+    public MultiColumnListAdapter(Context context, Cursor cursor, int numColumnsResId, int horizontalSpacingResId, int verticalSpacingResId) {
         super(context, cursor, 0);
         inflater = LayoutInflater.from(context);
 
         Resources res = context.getResources();
-        if (numColumnsResId > 0)
+        if (numColumnsResId > 0) {
             numColumns = res.getInteger(numColumnsResId);
+        }
 
-        if (horizontalSpacingResId > 0)
+        if (horizontalSpacingResId > 0) {
             gridItemHorizontalSpacing = (int) res.getDimension(horizontalSpacingResId);
+        }
+
+        if (verticalSpacingResId > 0) {
+            gridItemVerticalSpacing = (int) res.getDimension(verticalSpacingResId);
+        }
     }
+
+
 
     /**
      * Create a new row view.
@@ -58,7 +68,7 @@ public abstract class MultiColumnListAdapter<V extends MultiColumnListViewHolder
         // inflate a grid item view for each column in the row
         for (int col = 0; col < numColumns; col++) {
             View gridItemView = newGridItemView(context, cursor, parent);
-            LinearLayout.LayoutParams lp = getGridItemLayoutParams(col);
+            LinearLayout.LayoutParams lp = newGridItemLayoutParams(col);
 
             gridItemViewHolders[col] = newGridItemViewHolder(gridItemView);
             row.addView(gridItemView, lp);
@@ -86,6 +96,7 @@ public abstract class MultiColumnListAdapter<V extends MultiColumnListViewHolder
             if (gridItemIndex < numGridItems) {
                 cursor.moveToPosition(gridItemIndex);
                 setGridItemVisibility(gridItemViewHolder, true);
+                updateGridItemLayoutParams(gridItemViewHolder, listRowIndex);
                 bindGridItemView(gridItemViewHolder, context, cursor);
             } else {
                 setGridItemVisibility(gridItemViewHolder, false);
@@ -117,18 +128,31 @@ public abstract class MultiColumnListAdapter<V extends MultiColumnListViewHolder
     }
 
     /**
-     * Generate layout params for grid item view with appropriate horizontal spacing. The vertical
-     * spacing between grid items should be set by the list's divider height. The grid's top and
-     * bottom margins can be set on the list by enabling header and footer dividers or by
-     * disabling clipToPadding and setting bottom padding on the listview
+     * Generate layout params for grid item view with appropriate horizontal spacing since the view never changes columns.
      */
-    private LinearLayout.LayoutParams getGridItemLayoutParams(int column) {
+    private LinearLayout.LayoutParams newGridItemLayoutParams(int column) {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
         lp.leftMargin = (column == 0 ? gridItemHorizontalSpacing : gridItemHorizontalSpacing / 2);
         lp.rightMargin = (column == numColumns - 1 ? gridItemHorizontalSpacing : gridItemHorizontalSpacing / 2);
-        lp.topMargin = 0;
-        lp.bottomMargin = 0; // rely on the list divider for vertical spacing between rows
         return lp;
+    }
+
+    /**
+     * Update layout params for grid item view with appropriate vertical spacing since view re-use could change the spacing.
+     */
+    private void updateGridItemLayoutParams(MultiColumnListViewHolder gridItemViewHolder, int row) {
+        if (gridItemViewHolder != null) {
+            View gridItemView = gridItemViewHolder.getGridItemView();
+            if (gridItemView != null) {
+                LayoutParams lp = gridItemView.getLayoutParams();
+                if (lp instanceof MarginLayoutParams) {
+                    MarginLayoutParams mlp = (MarginLayoutParams) lp;
+                    int numRows = getCount();
+                    mlp.topMargin = (row == 0 ? gridItemVerticalSpacing : gridItemVerticalSpacing / 2);
+                    mlp.bottomMargin = (row == numRows - 1 ? gridItemVerticalSpacing : gridItemVerticalSpacing / 2);
+                }
+            }
+        }
     }
 
     private void setGridItemVisibility(MultiColumnListViewHolder gridItemViewHolder, boolean visible) {
