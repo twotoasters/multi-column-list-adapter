@@ -128,7 +128,7 @@ public abstract class MultiColumnListAdapter<V extends MultiColumnListViewHolder
     }
 
     /**
-     * Generate layout params for grid item view with appropriate horizontal spacing.
+     * Generate layout params for grid item view with appropriate horizontal spacing since the view never changes columns.
      */
     private LinearLayout.LayoutParams newGridItemLayoutParams(int column) {
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
@@ -138,7 +138,7 @@ public abstract class MultiColumnListAdapter<V extends MultiColumnListViewHolder
     }
 
     /**
-     * Update layout params for grid item view with appropriate vertical spacing.
+     * Update layout params for grid item view with appropriate vertical spacing since view re-use could change the spacing.
      */
     private void updateGridItemLayoutParams(MultiColumnListViewHolder gridItemViewHolder, int row) {
         if (gridItemViewHolder != null) {
