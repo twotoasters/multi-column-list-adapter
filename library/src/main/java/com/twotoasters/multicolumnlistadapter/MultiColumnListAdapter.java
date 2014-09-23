@@ -95,8 +95,8 @@ public abstract class MultiColumnListAdapter<V extends MultiColumnListViewHolder
 
             if (gridItemIndex < numGridItems) {
                 cursor.moveToPosition(gridItemIndex);
-                updateGridItemLayoutParams(gridItemViewHolder.getGridItemView().getLayoutParams(), listRowIndex);
                 setGridItemVisibility(gridItemViewHolder, true);
+                updateGridItemLayoutParams(gridItemViewHolder, listRowIndex);
                 bindGridItemView(gridItemViewHolder, context, cursor);
             } else {
                 setGridItemVisibility(gridItemViewHolder, false);
@@ -140,14 +140,19 @@ public abstract class MultiColumnListAdapter<V extends MultiColumnListViewHolder
     /**
      * Update layout params for grid item view with appropriate vertical spacing.
      */
-    private LayoutParams updateGridItemLayoutParams(LayoutParams lp, int row) {
-        if (lp instanceof MarginLayoutParams) {
-            MarginLayoutParams mlp = (MarginLayoutParams) lp;
-            int numRows = getCount();
-            mlp.topMargin = (row == 0 ? gridItemVerticalSpacing : gridItemVerticalSpacing / 2);
-            mlp.bottomMargin = (row == numRows - 1 ? gridItemVerticalSpacing : gridItemVerticalSpacing / 2);
+    private void updateGridItemLayoutParams(MultiColumnListViewHolder gridItemViewHolder, int row) {
+        if (gridItemViewHolder != null) {
+            View gridItemView = gridItemViewHolder.getGridItemView();
+            if (gridItemView != null) {
+                LayoutParams lp = gridItemView.getLayoutParams();
+                if (lp instanceof MarginLayoutParams) {
+                    MarginLayoutParams mlp = (MarginLayoutParams) lp;
+                    int numRows = getCount();
+                    mlp.topMargin = (row == 0 ? gridItemVerticalSpacing : gridItemVerticalSpacing / 2);
+                    mlp.bottomMargin = (row == numRows - 1 ? gridItemVerticalSpacing : gridItemVerticalSpacing / 2);
+                }
+            }
         }
-        return lp;
     }
 
     private void setGridItemVisibility(MultiColumnListViewHolder gridItemViewHolder, boolean visible) {
